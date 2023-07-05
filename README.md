@@ -63,10 +63,12 @@ The workshop is divided into four Missions. Each Mission has a number of Tasks. 
     1. Drive forward and backward
     2. Steer your PickwickCar
     3. Enhance your driving/steering skills
-- Mission 2 Safety systems in PickwickCars
+- Mission 2: Safety systems in PickwickCars
     1. Drive to obstacle and stop
     2. Wait for obstacle to move away
     3. Avoid obstacles by driving around them
+- Mission 3: Follow me car (two robots required)
+    1. Follow me
 - Mission Impossible: Autonomous driving
     1. If you manage this, you are a true PickwickCar master
 

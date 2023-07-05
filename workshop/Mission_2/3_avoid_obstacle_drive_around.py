@@ -8,4 +8,7 @@ from ev3dev2.sensor.lego import InfraredSensor
 # Connect to the car and its engines
 pickwickCar = PickwickCar(OUTPUT_B, OUTPUT_D)
 
+# Connect to the cars infrared (distance) sensor
+sensor = InfraredSensor(INPUT_1)
+
 # TODO: Drive forward until you "see" an obstacle and avoid it by driving around it
