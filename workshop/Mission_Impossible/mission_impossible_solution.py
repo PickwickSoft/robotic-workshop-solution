@@ -9,68 +9,52 @@ from ev3dev2.sensor import INPUT_4
 from ev3dev2.sensor.lego import ColorSensor
 
 pickwickCar = PickwickCar(OUTPUT_B, OUTPUT_D)
-reflection_sensor = ColorSensor(INPUT_4, mode='COL-REFLECT')
 color_sensor = ColorSensor(INPUT_4)
 infrared_sensor = InfraredSensor(INPUT_1)
 
-
-def stop_at_obstacle():
-    # Don't do anything as long as there is no obstacle in front of the car
-    while infrared_sensor.proximity > 20:
-        ...
-
-    # Brake smoothly
-    for speed in range(100, 0, -10):
-        pickwickCar.on(SpeedPercent(speed), SpeedPercent(speed))
-        time.sleep(0.03)
-
-    # Stop car
-    pickwickCar.off()
-
+MEAN_REFLECTION = 55
 
 def stop_at_red():
-    while color_sensor.color != ColorSensor.COLOR_RED:
-        ...
-
     # Brake smoothly
-    for speed in range(100, 0, -10):
-        pickwickCar.on(SpeedPercent(speed), SpeedPercent(speed))
+    for speed in range(30, 0, -5):
+        pickwickCar.on(calculate_steering(), SpeedPercent(speed))
         time.sleep(0.03)
 
     # Stop car
     pickwickCar.off()
-
-
-def start_at_green():
-    while color_sensor.color != ColorSensor.COLOR_GREEN:
-        ...
-
-    # Accelerate gradually
-    for speed in range(0, 100, 10):
-        pickwickCar.on(SpeedPercent(speed), SpeedPercent(speed))
-        time.sleep(0.03)
 
 
 def follow_line():
-    while True:
-        # Read the reflection value
-        reflection = reflection_sensor.reflected_light_intensity
-
-        # Calculate the steering value
-        steering = (reflection - 50) / 2
-
-        # Drive the car
-        pickwickCar.on(steering, SpeedPercent(100))
+    # Drive the car
+    speed = infrared_sensor.proximity - 10
+    if speed < 0:
+        speed = 0
+    if speed > 30:
+        speed = 30
+    pickwickCar.on(calculate_steering(), SpeedPercent(speed))
 
 
-def follow_front_car():
-    while True:
-        pickwickCar.on(SpeedPercent(infrared_sensor.proximity), SpeedPercent(infrared_sensor.proximity))
+def calculate_steering():
+    # Read the reflection value
+    reflection = color_sensor.reflected_light_intensity
+
+    # Calculate the steering value
+    difference = MEAN_REFLECTION - reflection
+    steering = difference * 4
+    if steering > 100:
+        steering = 100
+    if steering < -100:
+        steering = -100
+    return steering
         
 
-pickwickCar.on(SpeedPercent(100), SpeedPercent(100))
-stop_at_obstacle()
-stop_at_red()
-start_at_green()
-follow_line()
-follow_front_car()
+while True:
+    while color_sensor.color is not ColorSensor.COLOR_GREEN:
+        ...
+    # start_at_green()
+    while True:
+        follow_line()
+        if color_sensor.color == ColorSensor.COLOR_RED:
+            stop_at_red()
+            break
+    
