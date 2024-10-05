@@ -51,7 +51,7 @@ def calculate_steering():
 while True:
     while color_sensor.color is not ColorSensor.COLOR_GREEN:
         ...
-    # start_at_green()
+
     while True:
         follow_line()
         if color_sensor.color == ColorSensor.COLOR_RED:
