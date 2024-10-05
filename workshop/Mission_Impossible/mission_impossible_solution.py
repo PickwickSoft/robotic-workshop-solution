@@ -25,13 +25,16 @@ def stop_at_red():
 
 
 def follow_line():
-    # Drive the car
+    pickwickCar.on(calculate_steering(), SpeedPercent(calculate_speed()))
+
+
+def calculate_speed():
     speed = infrared_sensor.proximity - 10
     if speed < 0:
         speed = 0
     if speed > 30:
         speed = 30
-    pickwickCar.on(calculate_steering(), SpeedPercent(speed))
+    return speed
 
 
 def calculate_steering():
