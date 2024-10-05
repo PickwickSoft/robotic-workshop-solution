@@ -32,4 +32,4 @@ time.sleep(1)
 
 # You will get the solution for each Mission after trying everything out.
 # For this Getting Started Mission you get it directly! Have fun!
-pickwickCar.on_for_seconds(SpeedPercent(100), SpeedPercent(-100), 4)
+pickwickCar.on_for_seconds(SpeedPercent(100), SpeedPercent(100), 4)
